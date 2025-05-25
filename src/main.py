@@ -15,11 +15,17 @@ def main():
         print("Deleting docs directory...")
         os.system(f"rm -rf {dest_dir}")
 
+    # ✅ Crear el directorio docs antes de copiar
+    os.makedirs(dest_dir, exist_ok=True)
+
     print("Copying static files to docs directory...")
     os.system(f"cp -r static/* {dest_dir}/")
 
     print("Generating content...")
     generate_pages_recursive(content_dir, template_path, dest_dir, basepath)
+
+    # ✅ Desactiva Jekyll para evitar errores de GitHub Pages
+    open(os.path.join(dest_dir, ".nojekyll"), "w").close()
 
 if __name__ == "__main__":
     main()
